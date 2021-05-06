@@ -69,7 +69,7 @@ else()
 endif()
 
 add_compiler_export_flags()
-add_library(${VTFLIB_NAME} SHARED
+add_library(${VTFLIB_NAME}
 	${vtflib_SRCS}
 	${vtflib_OS_SRCS}
 	${vtflib_HDRS}

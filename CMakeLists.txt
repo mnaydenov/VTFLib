@@ -69,7 +69,11 @@ if(UNIX)
 endif()
 
 # compiling the library now:
-add_definitions(-DVTFLIB_EXPORTS)
+if(${BUILD_SHARED_LIBS})
+  add_definitions(-DVTFLIB_EXPORTS)
+else()
+  add_definitions(-DVTFLIB_STATIC)
+endif()
 
 # for config.h
 include_directories("${PROJECT_BINARY_DIR}/src")

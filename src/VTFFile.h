@@ -108,6 +108,22 @@ typedef struct tagSVTFCreateOptions
 } SVTFCreateOptions;
 #pragma pack()
 
+//! VTF Load options struct.
+/*!  
+	The SVTFLoadOptions struct defines options to be used when
+	loading VTF images with methods such as CVTFFile::Load(). 
+
+	\see CVTFFile::Load()
+*/
+#pragma pack(1)
+typedef struct tagSVTFLoadOptions
+{
+  enum Flags { none = 0, headerOnly = 1 << 0 };
+  int flags; 
+  vlChar* error;              //!< Error feedback. On error, if not already set, will point to a message that must be free()-ed by the user. On success is untouched.
+} SVTFLoadOptions;
+#pragma pack()
+
 #ifdef __cplusplus
 }
 #endif
@@ -172,7 +188,7 @@ namespace VTFLib
 		~CVTFFile();	//!< Deconstructor
 
 	public:
-		
+
 		//! Creates a new empty VTF image..
 		/*!
 			Creates a new empty VTF format image within a the current CVTFFile class.
@@ -236,6 +252,17 @@ namespace VTFLib
 			\see Create()
 		*/
 		vlBool IsLoaded() const;
+
+    //! Loads a VTF image with a generic reader.
+		/*!
+			Loads a VTF image file from a reader into the current VTFFile class. 
+      
+			\param Reader is an IReader subclass with user implementation of the interface.
+			\param Options is used to pass loading options, as well as get feedback like errors.
+			\return true on successful load, otherwise false.
+      \see tagSVTFLoadOptions
+		*/
+		vlBool Load(IO::Readers::IReader& Reader, SVTFLoadOptions* Options = NULL);
 
 		//! Loads a VTF image from disk.
 		/*!
@@ -308,7 +335,6 @@ namespace VTFLib
 
 		vlVoid ComputeResources();	 //!< Computes header VTF directory resources.
 
-		// Interface with out reader/writer classes
 		vlBool Load(IO::Readers::IReader *Reader, vlBool bHeaderOnly);
 		vlBool Save(IO::Writers::IWriter *Writer) const;
 

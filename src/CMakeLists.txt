@@ -79,5 +79,19 @@ if(USE_LIBTXC_DXTN)
 	target_link_libraries(${VTFLIB_NAME} ${LIBTXC_DXTN_LIBRARY})
 endif()
 
-install(TARGETS ${VTFLIB_NAME} DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(TARGETS ${VTFLIB_NAME} EXPORT ${VTFLIB_NAME}Config DESTINATION ${CMAKE_INSTALL_LIBDIR})
 install(FILES ${vtflib_HDRS} DESTINATION "include/${VTFLIB_NAME}")
+
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+  ${CMAKE_CURRENT_BINARY_DIR}/${VTFLIB_NAME}ConfigVersion.cmake
+  VERSION ${VTFLIB_VERSION}
+  COMPATIBILITY SameMajorVersion 
+  )
+
+install(EXPORT ${VTFLIB_NAME}Config 
+  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${VTFLIB_NAME}"
+  )
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${VTFLIB_NAME}ConfigVersion.cmake 
+  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${VTFLIB_NAME}"
+  )
